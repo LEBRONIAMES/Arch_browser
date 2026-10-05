@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Arch Linux Browser Emulator</title>
+    <style>
+        body {
+            background-color: #1a1a1a;
+            color: #00ff00;
+            font-family: 'Courier New', monospace;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        h1 {
+            color: #1793d1; /* Arch Linux Blue */
+            margin-bottom: 10px;
+            font-size: 24px;
+        }
+        /* Container for the virtual screen */
+        #screen {
+            width: 1024px;
+            height: 600px;
+            background: black;
+            border: 3px solid #1793d1;
+            box-shadow: 0 0 20px rgba(23, 147, 209, 0.4);
+        }
+        #screen span {
+            font-family: monospace;
+            font-size: 14px;
+            line-height: 14px;
+        }
+    </style>
+    <!-- Load the v86 emulator engine directly from a public CDN -->
+    <script src="https://copy.sh"></script>
+</head>
+<body>
+
+    <h1>Arch Linux Browser Console</h1>
+    
+    <!-- The emulator will render the terminal inside this div -->
+    <div id="screen"><div></div></div>
+
+    <script>
+        window.onload = function() {
+            // Initialize the x86 emulator using WebAssembly
+            var emulator = new V86Starter({
+                // Pull compiled WASM components directly from the v86 server
+                wasm_path: "https://copy.sh",
+                memory_size: 512 * 1024 * 1024,     // Allocate 512MB RAM
+                vga_memory_size: 8 * 1024 * 1024,   // 8MB Video RAM
+                screen_container: document.getElementById("screen"),
+                
+                // Fetch the official, pre-built minimal Arch Linux boot image over the web
+                // No backend server required!
+                bios: { url: "https://copy.sh" },
+                vga_bios: { url: "https://copy.sh" },
+                cdrom: { url: "https://copy.sh" }, 
+                
+                autostart: true,
+            });
+        };
+    </script>
+</body>
+</html>
